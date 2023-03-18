@@ -1,0 +1,14 @@
+#set ($dollar = "$")
+#set ($dot = ".")
+{
+	"dummy": 123
+	#if ($context.authorizer.session != $undefined)
+	, "_authToken": "$util.escapeJavaScript($context.authorizer.authorizationToken)"
+  , "_session": $context.authorizer.session
+  #end
+  #foreach($key in $input.path('$').keySet())
+    #if ($key != "_session")
+      , "$key": $input.json("$dollar$dot$key")
+    #end
+  #end
+}
